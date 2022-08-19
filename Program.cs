@@ -39,4 +39,8 @@ app.MapHub<ChatHub>("/chathub");
 
 app.MapFallbackToPage("/_Host");
 
+var context = app.Services.GetService<StreamWatcher>();
+
+app.Lifetime.ApplicationStarted.Register(async () => await context.Watch());
+
 app.Run();

@@ -18,8 +18,11 @@
             _hub = hub;
         }
 
-        public async Task Watch(HttpWebRequest request)
+        public async Task Watch()
         {
+            string URL = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,created_at,text";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+            request.ReadWriteTimeout = 10000;
             try
             {
                 request.Method = "GET";
@@ -63,7 +66,7 @@
                                 Console.WriteLine($"enemy => {tweetObj.data.enemy}");
                             }
 
-                            await _hub.Clients.All.SendAsync("ReceiveMessage", tweetList.Get());
+                            await _hub.Clients.All.SendAsync("ReceiveMessage", tweetList);
                             clock.Restart();
                             continue;
                         }
