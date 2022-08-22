@@ -35,6 +35,8 @@
 
             WebResponse response = request.GetResponse();
 
+            CircularBuffer<Rootobject> tweetList = new(50);
+
             using (StreamReader reader = new(response.GetResponseStream(), Encoding.ASCII))
             {
 

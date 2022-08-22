@@ -40,10 +40,15 @@
 </div>
 
 @code {
+    @using RaidFinder.Data
+    @using Cyotek.Collections.Generic
+    @using Microsoft.AspNetCore.SignalR.Client
+    @using Nito.Collections
+
     private HubConnection? hubConnection;
     private Deque<Rootobject> tweets = new(10);
-    private string? userInput;
-    private string? messageInput;
+    //private string? userInput;
+    //private string? messageInput;
     private int capacity = 10;
 
     protected override async Task OnInitializedAsync()

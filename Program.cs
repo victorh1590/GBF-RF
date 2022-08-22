@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using BlazorServerSignalRApp.Data;
+using RaidFinder.Data;
 using Microsoft.AspNetCore.ResponseCompression;
-using BlazorServerSignalRApp.Server.Hubs;
+using RaidFinder.Server.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +35,7 @@ app.UseRouting();
 
 app.MapBlazorHub();
 
-app.MapHub<ChatHub>("/chathub");
+app.MapHub<FinderHub>("/FinderHub");
 
 app.MapFallbackToPage("/_Host");
 
