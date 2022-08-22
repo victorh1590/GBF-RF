@@ -35,7 +35,6 @@
 				tweetObj.data.enemy = parsedText[2].Captures[0].Value;
 				return true;
 			}
-			Console.WriteLine("Text couldn't be parsed.");
 			return false;
 		}
 	}

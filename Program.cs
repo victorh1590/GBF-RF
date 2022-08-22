@@ -41,6 +41,6 @@ app.MapFallbackToPage("/_Host");
 
 var context = app.Services.GetService<StreamWatcher>();
 
-app.Lifetime.ApplicationStarted.Register(async () => await context.Watch());
+if(context != null) app.Lifetime.ApplicationStarted.Register(async () => await context.Watch());
 
 app.Run();

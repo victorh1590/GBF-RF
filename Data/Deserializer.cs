@@ -1,4 +1,4 @@
-﻿namespace BlazorServerSignalRApp.Data
+﻿namespace RaidFinder.Data
 {
     using Cyotek.Collections.Generic;
     using System.Text.Json;

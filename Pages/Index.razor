@@ -1,7 +1,4 @@
 ﻿@page "/"
-@using BlazorServerSignalRApp.Data
-@using Cyotek.Collections.Generic
-@using Microsoft.AspNetCore.SignalR.Client
 @inject NavigationManager NavigationManager
 @implements IAsyncDisposable
 
@@ -31,8 +28,7 @@
 </ul>*@
 
 <div class="list-group">
-    @foreach (var tweet in tweets)
-    {
+    <Virtualize Items="@tweets" Context="tweet">
       <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
         <div class="d-flex w-100 justify-content-between">
           <h5 class="mb-1">@tweet.data.room</h5>
@@ -40,26 +36,34 @@
         </div>
         <p class="mb-1">@tweet.data.enemy</p>
       </a>
-    }
+    </Virtualize>
 </div>
 
 @code {
     private HubConnection? hubConnection;
-    private List<Rootobject> tweets = new();
+    private Deque<Rootobject> tweets = new(10);
     private string? userInput;
     private string? messageInput;
+    private int capacity = 10;
 
     protected override async Task OnInitializedAsync()
     {
         hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .WithUrl(NavigationManager.ToAbsoluteUri("/FinderHub"))
             .Build();
 
-        hubConnection.On<List<Rootobject>>("ReceiveMessage", (List<Rootobject> tweetList) =>
+        hubConnection.On<Rootobject>("ReceiveMessage", (Rootobject tweet) =>
         {
-        //var encodedMsg = new KeyValuePair<string, string>(user, message);
-            tweets = tweetList;
-            tweets.Reverse();
+            //var encodedMsg = new KeyValuePair<string, string>(user, message);
+            tweets.AddToFront(tweet);
+            if (capacity == 0) 
+            {
+                tweets.RemoveFromBack();
+            }
+            else 
+            {
+                capacity--; 
+            }
             InvokeAsync(StateHasChanged);
         });
 

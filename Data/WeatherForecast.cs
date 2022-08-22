@@ -1,4 +1,4 @@
-namespace BlazorServerSignalRApp.Data;
+namespace RaidFinder.Data;
 
 public class WeatherForecast
 {

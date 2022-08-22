@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Cyotek.CircularBuffer" Version="1.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
+    <PackageReference Include="Nito.Collections.Deque" Version="1.1.1" />
   </ItemGroup>
 
 </Project>

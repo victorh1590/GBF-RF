@@ -1,18 +1,18 @@
-﻿namespace BlazorServerSignalRApp.Data
+﻿namespace RaidFinder.Data
 {
     using Cyotek.Collections.Generic;
     using System.Diagnostics;
     using System.Net;
     using System.Text;
     using Microsoft.AspNetCore.SignalR;
-    using BlazorServerSignalRApp.Server.Hubs;
+    using RaidFinder.Server.Hubs;
 
     internal class StreamWatcher
     {
         private readonly IConfiguration _config;
-        private readonly IHubContext<ChatHub> _hub;
+        private readonly IHubContext<FinderHub> _hub;
 
-        public StreamWatcher(IConfiguration configuration, IHubContext<ChatHub> hub)
+        public StreamWatcher(IConfiguration configuration, IHubContext<FinderHub> hub)
         {
             _config = configuration;
             _hub = hub;
@@ -32,8 +32,6 @@
             {
                 Console.WriteLine(error.Message + error.StackTrace);
             }
-
-            CircularBuffer<Rootobject> tweetList = new(10);
 
             WebResponse response = request.GetResponse();
 
@@ -64,9 +62,9 @@
                                 Console.WriteLine($"message => {tweetObj.data.message}");
                                 Console.WriteLine($"room => {tweetObj.data.room}");
                                 Console.WriteLine($"enemy => {tweetObj.data.enemy}");
-                            }
 
-                            await _hub.Clients.All.SendAsync("ReceiveMessage", tweetList);
+                                await _hub.Clients.All.SendAsync("ReceiveMessage", tweetObj);
+                            }
                             clock.Restart();
                             continue;
                         }
