@@ -19,11 +19,7 @@
 			{
 				GroupCollection groups = match.Groups;
 
-				if (!groups[0].Success)
-				{
-					//tweetList.RemoveRange(tweetList.Count - 1, 1);
-					break;
-				}
+				if (!groups[0].Success) break;
 
 				var parsedText = groups.Cast<Group>()
 										.Skip(1)

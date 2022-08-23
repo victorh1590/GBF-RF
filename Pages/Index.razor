@@ -41,15 +41,14 @@
 
 @code {
     @using RaidFinder.Data
-    @using Cyotek.Collections.Generic
     @using Microsoft.AspNetCore.SignalR.Client
     @using Nito.Collections
 
     private HubConnection? hubConnection;
-    private Deque<Rootobject> tweets = new(10);
+    private Deque<Rootobject> tweets = new(30);
     //private string? userInput;
     //private string? messageInput;
-    private int capacity = 10;
+    private int capacity = 30;
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,7 +58,6 @@
 
         hubConnection.On<Rootobject>("ReceiveMessage", (Rootobject tweet) =>
         {
-            //var encodedMsg = new KeyValuePair<string, string>(user, message);
             tweets.AddToFront(tweet);
             if (capacity == 0) 
             {

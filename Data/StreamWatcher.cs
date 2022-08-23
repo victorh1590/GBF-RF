@@ -1,6 +1,5 @@
 ﻿namespace RaidFinder.Data
 {
-    using Cyotek.Collections.Generic;
     using System.Diagnostics;
     using System.Net;
     using System.Text;
@@ -18,78 +17,102 @@
             _hub = hub;
         }
 
-        public async Task Watch()
+        private WebResponse ConnectToStream()
         {
             string URL = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,created_at,text";
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
             request.ReadWriteTimeout = 10000;
-            try
+            
+            while(true)
             {
-                request.Method = "GET";
-                request.Headers.Add("Authorization: Bearer " + _config["token"]);
-            }
-            catch (InvalidOperationException error)
-            {
-                Console.WriteLine(error.Message + error.StackTrace);
-            }
-
-            WebResponse response = request.GetResponse();
-
-            CircularBuffer<Rootobject> tweetList = new(50);
-
-            using (StreamReader reader = new(response.GetResponseStream(), Encoding.ASCII))
-            {
-
-                Stopwatch clock = new();
-                clock.Start();
                 try
                 {
-                    string? tweet;
-
-                    while (clock.IsRunning)
-                    {
-                        if ((tweet = await reader.ReadLineAsync()) != null)
-                        {
-                            Console.WriteLine(tweet);
-                            clock.Stop();
-
-                            if (Deserializer.DeserializeTweetAndSaveInList(tweet, tweetList))
-                            {
-                                string dateFormat = "yyyy-MM-ddTHH:mm:ss";
-                                var tweetObj = tweetList.Last();
-                                Console.WriteLine($"Deserialization result: {tweetList.Size} elements in list.");
-                                Console.WriteLine($"author_id => {tweetObj.data.author_id}");
-                                Console.WriteLine($"created_at => {tweetObj.data.created_at.ToString(dateFormat)}");
-                                Console.WriteLine($"text => {tweetObj.data.text}");
-                                Console.WriteLine($"message => {tweetObj.data.message}");
-                                Console.WriteLine($"room => {tweetObj.data.room}");
-                                Console.WriteLine($"enemy => {tweetObj.data.enemy}");
-
-                                await _hub.Clients.All.SendAsync("ReceiveMessage", tweetObj);
-                            }
-                            clock.Restart();
-                            continue;
-                        }
-                        if (clock.ElapsedMilliseconds > 10000)
-                        {
-                            clock.Stop();
-                            reader.Close();
-                            throw new IOException("Read timeout.");
-                        }
-                    }
+                    request.Method = "GET";
+                    request.Headers.Add("Authorization: Bearer " + _config["token"]);
+                    return request.GetResponse();
                 }
-                catch (IOException error)
+                catch (InvalidOperationException error)
                 {
                     Console.WriteLine(error.Message + error.StackTrace);
                 }
-                finally
-                {
-                    reader.Close();
-                    Console.WriteLine("Reader Closed.");
+            }
+        }
 
-                    clock.Stop();
-                    Console.WriteLine("Clock Stopped.");
+        private async Task ReadStreamAndNotify(Stopwatch clock, StreamReader reader)
+        {
+            string? tweet;
+
+            void DebugOutput(Rootobject tweetObj)
+            {
+                string dateFormat = "yyyy-MM-ddTHH:mm:ss";
+                //Console.WriteLine($"Deserialization result: {tweetList.Size} elements in list.");
+                Console.WriteLine($"author_id => {tweetObj.data.author_id}");
+                Console.WriteLine($"created_at => {tweetObj.data.created_at.ToString(dateFormat)}");
+                Console.WriteLine($"text => {tweetObj.data.text}");
+                Console.WriteLine($"message => {tweetObj.data.message}");
+                Console.WriteLine($"room => {tweetObj.data.room}");
+                Console.WriteLine($"enemy => {tweetObj.data.enemy}");
+            }
+                        
+            async Task NotifyClients(Rootobject tweetObj) => await _hub.Clients.All.SendAsync("ReceiveMessage", tweetObj);
+
+            async Task TweetProcessment(Rootobject? tweetObj)
+            {
+                if (tweetObj != null)
+                {
+                    DebugOutput(tweetObj);
+                    await NotifyClients(tweetObj);
                 }
+            }
+
+            while (clock.IsRunning)
+            {
+                if ((tweet = await reader.ReadLineAsync()) != null)
+                {
+                    Console.WriteLine(tweet);
+                    clock.Stop();
+
+                    var tweetObj = Deserializer.DeserializeTweet(tweet);
+                    await TweetProcessment(tweetObj);
+ 
+                    clock.Restart();
+                    continue;
+                }
+                if (clock.ElapsedMilliseconds > 10000)
+                {
+                    clock.Stop();
+                    reader.Close();
+                    throw new IOException("Read timeout.");
+                }
+            }
+        }
+
+        public async Task Watch()
+        {
+            WebResponse response = ConnectToStream();
+
+            using StreamReader reader = new(response.GetResponseStream(), Encoding.ASCII);
+
+            Stopwatch clock = new();
+
+            clock.Start();
+            try
+            {
+                await ReadStreamAndNotify(clock, reader);
+            }
+            catch (IOException error)
+            {
+                Console.WriteLine(error.Message + error.StackTrace);
+            }
+            finally
+            {
+                reader.Close();
+                Console.WriteLine("Reader Closed.");
+
+                clock.Stop();
+                Console.WriteLine("Clock Stopped.");
             }
         }
     }
