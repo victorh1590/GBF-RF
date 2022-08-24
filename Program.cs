@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<StreamWatcher>();
+builder.Services.AddSingleton<StreamConsumerService>();
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -39,7 +39,7 @@ app.MapHub<FinderHub>("/FinderHub");
 
 app.MapFallbackToPage("/_Host");
 
-var context = app.Services.GetService<StreamWatcher>();
+var context = app.Services.GetService<StreamConsumerService>();
 
 if(context != null) app.Lifetime.ApplicationStarted.Register(async () => await context.Watch());
 
