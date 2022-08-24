@@ -8,13 +8,13 @@
         {
         }
 
-        public static Rootobject? DeserializeTweet(string tweet)
+        public static Tweet? DeserializeTweet(string tweet)
         {
 
             if (String.IsNullOrEmpty(tweet)) return null;
             try
             {
-                var tweetObj = JsonSerializer.Deserialize<Rootobject>(tweet);
+                var tweetObj = JsonSerializer.Deserialize<Tweet>(tweet);
                 if (tweetObj == null) return null;
                 if (!Parser.Parse(tweetObj)) return null;
                 return tweetObj;

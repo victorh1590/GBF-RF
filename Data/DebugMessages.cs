@@ -2,7 +2,7 @@
 {
     internal static class DebugMessages
     {
-        public static void DebugOutput(Rootobject tweetObj)
+        public static void DebugOutput(Tweet tweetObj)
         {
             string dateFormat = "yyyy-MM-ddTHH:mm:ss";
             //Console.WriteLine($"Deserialization result: {tweetList.Size} elements in list.");

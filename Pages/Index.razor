@@ -45,7 +45,7 @@
     @using Nito.Collections
 
     private HubConnection? hubConnection;
-    private Deque<Rootobject> tweets = new(30);
+    private Deque<Tweet> tweets = new(30);
     //private string? userInput;
     //private string? messageInput;
     private int capacity = 30;
@@ -56,7 +56,7 @@
             .WithUrl(NavigationManager.ToAbsoluteUri("/FinderHub"))
             .Build();
 
-        hubConnection.On<Rootobject>("ReceiveMessage", (Rootobject tweet) =>
+        hubConnection.On<Tweet>("ReceiveMessage", (Tweet tweet) =>
         {
             tweets.AddToFront(tweet);
             if (capacity == 0) 

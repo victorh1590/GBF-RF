@@ -1,6 +1,6 @@
 ﻿namespace RaidFinder.Data
 {
-    public class Rootobject
+    public class Tweet
     {
         public Data data { get; set; } = default!;
         public Matching_Rules[] matching_rules { get; set; } = default!;

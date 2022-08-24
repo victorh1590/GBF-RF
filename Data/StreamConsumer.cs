@@ -39,6 +39,6 @@ namespace RaidFinder.Data
             }
         }
 
-        private async Task NotifyClients(Rootobject tweetObj) => await _hub.Clients.All.SendAsync("ReceiveMessage", tweetObj);
+        private async Task NotifyClients(Tweet tweetObj) => await _hub.Clients.All.SendAsync("ReceiveMessage", tweetObj);
     }
 }

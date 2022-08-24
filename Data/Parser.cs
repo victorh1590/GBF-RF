@@ -9,7 +9,7 @@
 		{
 		}
 
-		public static bool Parse(Rootobject tweetObj)
+		public static bool Parse(Tweet tweetObj)
 		{
 			Regex rx = new Regex(@"(.*?)\s*(\w{8}(?=\s*\:Battle ID))\s*(\:Battle ID)\n(I need backup!)\n(.*?(?=\nhttps))",
 				RegexOptions.Compiled | RegexOptions.Singleline);
