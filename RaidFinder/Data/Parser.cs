@@ -1,6 +1,5 @@
 ﻿namespace RaidFinder.Data
 {
-	using System;
 	using System.Text.RegularExpressions;
 
 	internal class Parser

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaidFinder", "RaidFinder\RaidFinder.csproj", "{9220E9E5-CAA1-4233-AFE7-C5B11A3D028D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaidFinderUnitTests", "RaidFinderUnitTests\RaidFinderUnitTests.csproj", "{9164F1F9-4304-493F-9232-A11C91F1D4D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9220E9E5-CAA1-4233-AFE7-C5B11A3D028D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9220E9E5-CAA1-4233-AFE7-C5B11A3D028D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9220E9E5-CAA1-4233-AFE7-C5B11A3D028D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9220E9E5-CAA1-4233-AFE7-C5B11A3D028D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9164F1F9-4304-493F-9232-A11C91F1D4D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9164F1F9-4304-493F-9232-A11C91F1D4D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9164F1F9-4304-493F-9232-A11C91F1D4D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9164F1F9-4304-493F-9232-A11C91F1D4D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
