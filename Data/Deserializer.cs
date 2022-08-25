@@ -16,6 +16,7 @@
             {
                 var tweetObj = JsonSerializer.Deserialize<Tweet>(tweet);
                 if (tweetObj == null) return null;
+                if (tweetObj.data.source != "グランブルー ファンタジー") return null;
                 if (!Parser.Parse(tweetObj)) return null;
                 return tweetObj;
             }

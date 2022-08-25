@@ -13,7 +13,7 @@ namespace RaidFinder.Data
 
         public WebResponse ConnectToStream()
         {
-            string URL = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,created_at,text";
+            string URL = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,created_at,text,source";
 #pragma warning disable SYSLIB0014 // Type or member is obsolete
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
 #pragma warning restore SYSLIB0014 // Type or member is obsolete

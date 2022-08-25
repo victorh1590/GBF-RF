@@ -23,7 +23,8 @@ namespace RaidFinder.Data
             WebResponse response = connection.ConnectToStream();
             StreamConsumer consumer = new(_hub);
 
-            using StreamReader reader = new(response.GetResponseStream(), Encoding.ASCII);
+            Console.OutputEncoding = Encoding.UTF8;
+            using StreamReader reader = new(response.GetResponseStream(), Encoding.UTF8);
 
             Stopwatch clock = new();
             clock.Start();

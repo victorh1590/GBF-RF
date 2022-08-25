@@ -1,4 +1,6 @@
-﻿namespace RaidFinder.Data
+﻿using System.Text;
+
+namespace RaidFinder.Data
 {
     internal static class DebugMessages
     {
@@ -9,6 +11,7 @@
             Console.WriteLine($"author_id => {tweetObj.data.author_id}");
             Console.WriteLine($"created_at => {tweetObj.data.created_at.ToString(dateFormat)}");
             Console.WriteLine($"text => {tweetObj.data.text}");
+            Console.WriteLine($"source => {tweetObj.data.source}");
             Console.WriteLine($"message => {tweetObj.data.message}");
             Console.WriteLine($"room => {tweetObj.data.room}");
             Console.WriteLine($"enemy => {tweetObj.data.enemy}");

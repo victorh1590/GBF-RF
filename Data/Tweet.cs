@@ -12,6 +12,7 @@
         public DateTime created_at { get; set; } = default!;
         public string id { get; set; } = default!;
         public string text { get; set; } = default!;
+        public string source { get; set; } = default!;
         public string message { get; set; } = default!;
         public string room { get; set; } = default!;
         public string enemy { get; set; } = default!;
